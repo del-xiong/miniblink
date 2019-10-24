@@ -153,6 +153,18 @@ func (view *WebView) MoveToCenter() {
 	win.MoveWindow(view.handle, x, y, width, height, false)
 }
 
+func (view *WebView) MoveTo(x, y int32) {
+	var width int32 = 0
+	var height int32 = 0
+	{
+		rect := &win.RECT{}
+		win.GetWindowRect(view.handle, rect)
+		width = rect.Right - rect.Left
+		height = rect.Bottom - rect.Top
+	}
+	win.MoveWindow(view.handle, x, y, width, height, false)
+}
+
 func (view *WebView) SetWindowTitle(title string) {
 	done := make(chan bool)
 	jobQueue <- func() {
