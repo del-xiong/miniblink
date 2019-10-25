@@ -86,6 +86,8 @@ func NewWebView(isTransparent bool, bounds ...int) *WebView {
 
 	//注入预置的API给js调用
 	view.Inject("MoveToCenter", view.MoveToCenter)
+	view.Inject("Move", view.Move)
+	view.Inject("GetWindowRect", view.GetWindowRect)
 	view.Inject("SetWindowTitle", view.SetWindowTitle)
 	view.Inject("EnableAutoTitle", view.EnableAutoTitle)
 	view.Inject("DisableAutoTitle", view.DisableAutoTitle)
@@ -153,7 +155,7 @@ func (view *WebView) MoveToCenter() {
 	win.MoveWindow(view.handle, x, y, width, height, false)
 }
 
-func (view *WebView) MoveTo(x, y int32) {
+func (view *WebView) Move(x, y int32, relative bool) {
 	var width int32 = 0
 	var height int32 = 0
 	{
@@ -161,8 +163,18 @@ func (view *WebView) MoveTo(x, y int32) {
 		win.GetWindowRect(view.handle, rect)
 		width = rect.Right - rect.Left
 		height = rect.Bottom - rect.Top
+		if relative {
+			x = rect.Left + x
+			y = rect.Top + y
+		}
 	}
 	win.MoveWindow(view.handle, x, y, width, height, false)
+}
+
+func (view *WebView) GetWindowRect() (int32, int32) {
+	rect := &win.RECT{}
+	win.GetWindowRect(view.handle, rect)
+	return rect.Left, rect.Top
 }
 
 func (view *WebView) SetWindowTitle(title string) {
