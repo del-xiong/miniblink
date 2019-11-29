@@ -23,6 +23,10 @@ type WebView struct {
 	Destroy       chan interface{} //webview销毁
 
 	IsDestroy bool
+
+	blacklist []string // 黑名单url
+	// 设置白名单url则认为是强制白名单模式 如果开启此模式 只能访问能够匹配白名单的地址
+	whitelist []string
 }
 
 func NewWebView(isTransparent bool, bounds ...int) *WebView {
@@ -308,4 +312,12 @@ func (view *WebView) DestroyWindow() {
 		}
 		<-done
 	}
+}
+// 设置黑名单
+func (view *WebView) SetBlacklist(args ...string) {
+	view.blacklist = append(view.blacklist, args...)
+}
+// 设置白名单
+func (view *WebView) SetWhitelist(args ...string) {
+	view.whitelist = append(view.whitelist, args...)
 }
