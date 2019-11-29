@@ -21,6 +21,14 @@ void WKE_CALL_TYPE onTitleChangedCallback(wkeWebView window, void *param, const 
     goOnTitleChangedCallback(window, wkeGetString(title));
 }
 
+bool WKE_CALL_TYPE onUrlLoadBegin(wkeWebView window, void *param, const char *url, wkeNetJob job)
+{
+    if (goOnUrlLoadBeginCheck(window, url)) {
+        wkeNetCancelRequest(job);
+    }
+    return false;
+}
+
 void initWebViewEvent(wkeWebView window)
 {
     //窗口被销毁
@@ -31,4 +39,6 @@ void initWebViewEvent(wkeWebView window)
     wkeOnDocumentReady2(window, onDocumentReady2Callback, NULL);
     //title changed
     wkeOnTitleChanged(window, onTitleChangedCallback, NULL);
+    // load url begin
+    wkeOnLoadUrlBegin(window, onUrlLoadBegin, NULL);
 }

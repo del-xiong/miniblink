@@ -32,3 +32,13 @@ func goOnTitleChangedCallback(window C.wkeWebView, titleString *C.char) {
 		view.Emit("titleChanged", view, titleGoString)
 	}()
 }
+//export goOnUrlLoadBeginCheck
+func goOnUrlLoadBeginCheck(window C.wkeWebView, url *C.char) bool {
+	//把C过来的字符串转化为golang的
+	urlGoString := C.GoString(url)
+	view := getWebViewByWindow(window)
+	if !view.isRequestAllowed(urlGoString) {
+		return true
+	}
+	return false
+}
