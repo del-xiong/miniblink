@@ -9,7 +9,6 @@ import (
 	"github.com/lxn/win"
 	"github.com/del-xiong/blink/internal/devtools"
 	"github.com/del-xiong/blink/internal/dll"
-	"log"
 	"os"
 	"path/filepath"
 	"runtime"
