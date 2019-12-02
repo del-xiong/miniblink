@@ -38,6 +38,7 @@ func goOnUrlLoadBeginCheck(window C.wkeWebView, url *C.char) bool {
 	urlGoString := C.GoString(url)
 	view := getWebViewByWindow(window)
 	if !view.isRequestAllowed(urlGoString) {
+		view.Emit("requestBlocked", view, urlGoString)
 		return true
 	}
 	return false
