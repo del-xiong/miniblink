@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 import "C"
 import (

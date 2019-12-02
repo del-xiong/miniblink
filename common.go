@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 import (
 	"log"
@@ -17,10 +17,10 @@ func (w writer) Write(p []byte) (n int, err error) {
 }
 
 //日志输出,默认输出
-var logger = log.New(writer(true), "[blink] ", log.LstdFlags)
+var logger = log.New(writer(true), "[miniblink] ", log.LstdFlags)
 
 //临时目录,用于存放临时文件如:dll,cookie等
-var TempPath = filepath.Join(os.TempDir(), "blink")
+var TempPath = filepath.Join(os.TempDir(), "miniblink")
 
 //是否为调试模式
 var isDebug = true
