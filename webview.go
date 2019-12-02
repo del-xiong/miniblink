@@ -327,6 +327,18 @@ func (view *WebView) DestroyWindow() {
 func (view *WebView) SetBlacklist(args ...string) {
 	view.blacklist = append(view.blacklist, args...)
 }
+// 清空黑名单
+func (view *WebView) ClearBlacklist() {
+	view.blacklist = make([]string, 0)
+}
+// 从黑名单移除指定路径
+func (view *WebView) RemoveFromBlacklist(path string) {
+	for k, v := range view.blacklist {
+		if v == path {
+			view.blacklist = append(view.blacklist[:k], view.blacklist[k+1:]...)
+		}
+	}
+}
 // 设置白名单
 func (view *WebView) SetWhitelist(args ...string) {
 	view.whitelist = append(view.whitelist, args...)
