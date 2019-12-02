@@ -1,5 +1,5 @@
 # blink
-本库fork自 https://github.com/raintean/blink 并做了一些更新
+本库fork自 https://github.com/raintean/blink 并做了一些更新  
 使用html来编写golang的GUI程序(only windows), 基于[miniblink开源库](https://github.com/weolar/miniblink49)  
 
 ## Demo
@@ -22,7 +22,7 @@
 
 ## 安装
 ```bash
-go get github.com/del-xiong/blink
+go get github.com/del-xiong/miniblink
 ```
 
 ## 示例
@@ -30,30 +30,30 @@ go get github.com/del-xiong/blink
 package main
 
 import (
-	"github.com/del-xiong/blink"
+	"github.com/del-xiong/miniblink"
 	"github.com/elazarl/go-bindata-assetfs"
 	"log"
 )
 
 func main() {
 	//设置调试模式
-	blink.SetDebugMode(true)
+	miniblink.SetDebugMode(true)
 
-	//初始化blink模块
-	err := blink.InitBlink()
+	//初始化miniblink模块
+	err := miniblink.InitBlink()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//注册虚拟网络文件系统到域名app
-	blink.RegisterFileSystem("app", &assetfs.AssetFS{
+	miniblink.RegisterFileSystem("app", &assetfs.AssetFS{
 		Asset:     bin.Asset,
 		AssetDir:  bin.AssetDir,
 		AssetInfo: bin.AssetInfo,
 	})
 
 	//新建view,加载URL
-	view := blink.NewWebView(false, 1366, 920)
+	view := miniblink.NewWebView(false, 1366, 920)
 	//直接加载虚拟文件系统中的网页
 	view.LoadURL("http://app/index.html")
 	view.SetWindowTitle("Golang GUI Application")
@@ -61,7 +61,13 @@ func main() {
 	view.ShowWindow()
 	view.ShowDevTools()
 
-	<-make(chan bool)
+	defer view.DestroyWindow()
+	mainLock := make(chan bool)
+	view.On("destroy", func(_ *miniblink.WebView) {
+		view = nil
+		mainLock <- true
+	})
+	<-mainLock
 	
 }
 ```

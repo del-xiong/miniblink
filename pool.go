@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 //#include "wke.h"
 import "C"

@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 //#include "blink.h"
 import "C"
@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/lxn/win"
-	"github.com/del-xiong/blink/internal/devtools"
-	"github.com/del-xiong/blink/internal/dll"
+	"github.com/del-xiong/miniblink/internal/devtools"
+	"github.com/del-xiong/miniblink/internal/dll"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -39,7 +39,7 @@ func InitBlink() error {
 		}
 		n, err := file.Write(data)
 		if err != nil {
-			return fmt.Errorf("无法写入dll文件,err: %s", err)
+			return fmt.Errorf("无法NewWebView写入dll文件,err: %s", err)
 		}
 		if len(data) != n {
 			return fmt.Errorf("写入校验失败")
@@ -94,7 +94,7 @@ func InitBlink() error {
 		}
 	}()
 
-	logger.Println("blink初始化完毕")
+	logger.Println("miniblink初始化完毕")
 
 	return nil
 }

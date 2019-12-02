@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 //#include "webview.h"
 import "C"

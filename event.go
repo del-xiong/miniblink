@@ -1,4 +1,4 @@
-package blink
+package miniblink
 
 //#include "event.h"
 import "C"
