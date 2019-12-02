@@ -35,6 +35,11 @@ void setWindowTitle(wkeWebView window, char *title)
     free(title);
 }
 
+void setCspCheck(wkeWebView window, bool enable)
+{
+    wkeSetCspCheckEnable(window, enable);
+}
+
 const char *getWebTitle(wkeWebView window)
 {
     return wkeGetTitle(window);
