@@ -190,6 +190,16 @@ func (view *WebView) SetWindowTitle(title string) {
 	<-done
 }
 
+// 设置是否检查跨域 默认true
+func (view *WebView) SetCspCheck(enable bool) {
+	done := make(chan bool)
+	jobQueue <- func() {
+		C.setCspCheck(view.window, C._Bool(enable))
+		close(done)
+	}
+	<-done
+}
+
 func (view *WebView) EnableAutoTitle() {
 	view.autoTitle = true
 	view.SetWindowTitle(view.GetWebTitle())

@@ -1,5 +1,5 @@
 # blink
-本库fork自 https://github.com/raintean/blink 并做了一些更新  
+本库fork自 https://github.com/raintean/blink 并做了一些更新
 使用html来编写golang的GUI程序(only windows), 基于[miniblink开源库](https://github.com/weolar/miniblink49)  
 
 ## Demo
