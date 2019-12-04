@@ -5,6 +5,7 @@ import "C"
 import (
 	"github.com/CHH/eventemitter"
 	"github.com/lxn/win"
+	"reflect"
 	"unsafe"
 )
 
@@ -27,6 +28,10 @@ type WebView struct {
 	blacklist []string // 黑名单url
 	// 设置白名单url则认为是强制白名单模式 如果开启此模式 只能访问能够匹配白名单的地址
 	whitelist []string
+	// 设置内容返回处理回调
+	urlEndHandler interface{}
+	// 内容处理回调允许处理的内容类型
+	urlEndHandlerMimeTypes []string
 }
 
 func NewWebView(isTransparent bool, bounds ...int) *WebView {
@@ -37,6 +42,13 @@ func NewWebView(isTransparent bool, bounds ...int) *WebView {
 		DocumentReady: make(chan interface{}),
 		Destroy:       make(chan interface{}),
 		IsDestroy:     false,
+		urlEndHandlerMimeTypes: []string{
+			"text/html", // html
+			"application/x-javascript", //js
+			//"text/css", //css
+			//"application/json", //json
+			//"image/svg+xml", //svg
+		},
 	}
 	//初始化event emitter
 	view.Init()
@@ -342,4 +354,15 @@ func (view *WebView) RemoveFromBlacklist(path string) {
 // 设置白名单
 func (view *WebView) SetWhitelist(args ...string) {
 	view.whitelist = append(view.whitelist, args...)
+}
+
+// 设置请求处理钩子函数
+func (view *WebView) SetUrlEndHandler(value interface{}) {
+	if reflect.TypeOf(value).Kind() == reflect.Func {
+		view.urlEndHandler = value
+	}
+}
+// 添加urlEndHandlerMimeTypes处理类型
+func (view *WebView) AddUrlEndHandlerMimeTypes(args ...string) {
+	view.urlEndHandlerMimeTypes = append(view.urlEndHandlerMimeTypes, args...)
 }

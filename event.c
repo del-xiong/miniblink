@@ -23,10 +23,29 @@ void WKE_CALL_TYPE onTitleChangedCallback(wkeWebView window, void *param, const 
 
 bool WKE_CALL_TYPE onUrlLoadBegin(wkeWebView window, void *param, const char *url, wkeNetJob job)
 {
-    if (goOnUrlLoadBeginCheck(window, url)) {
+    struct goOnUrlLoadBeginCheck_Return checkReturn  = goOnUrlLoadBeginCheck(window, url);
+    if (checkReturn.checkFailed) {
         wkeNetCancelRequest(job);
+        return true;
+    }
+    // 设置了回调才hook 因为很影响性能
+    if (checkReturn.urlEndCbDefined) {
+        wkeNetHookRequest(job);
     }
     return false;
+}
+
+void WKE_CALL_TYPE onUrlLoadEnd(wkeWebView window, void* param, const char *url, void *job, void *buf, int len) {
+    char * data;
+    char * databuf;
+    const char * mime;
+    databuf = (char *)buf;
+    mime = wkeNetGetMIMEType(job, NULL);
+    data = goOnUrlLoadEndHandle(window, mime, url, databuf, &len);
+    // 0值不要调setdata 否则blink可能会崩溃
+    if (len > 0) {
+        wkeNetSetData(job, data, len);
+    }
 }
 
 void initWebViewEvent(wkeWebView window)
@@ -41,4 +60,6 @@ void initWebViewEvent(wkeWebView window)
     wkeOnTitleChanged(window, onTitleChangedCallback, NULL);
     // load url begin
     wkeOnLoadUrlBegin(window, onUrlLoadBegin, NULL);
+    // load url end
+    wkeOnLoadUrlEnd(window, onUrlLoadEnd, NULL);
 }

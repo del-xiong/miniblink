@@ -12,6 +12,13 @@ struct goGetNetFSData_Return
     int length;
 };
 
+//goOnUrlLoadBeginCheck函数返回值
+struct goOnUrlLoadBeginCheck_Return
+{
+    bool checkFailed;
+    bool urlEndCbDefined;
+};
+
 //获取网络文件系统数据, -> netfs.go
 struct goGetNetFSData_Return goGetNetFSData(wkeWebView window, const char *url);
 /*****************netfs end**************/
@@ -31,6 +38,8 @@ void goOnDocumentReadyCallback(wkeWebView window);
 //title changed回调
 void goOnTitleChangedCallback(wkeWebView window, const utf8 *title);
 //url load begin检查
-bool goOnUrlLoadBeginCheck(wkeWebView window,const char *url);
+struct goOnUrlLoadBeginCheck_Return goOnUrlLoadBeginCheck(wkeWebView window,const char *url);
+//url load end handle
+void *goOnUrlLoadEndHandle(wkeWebView window,const char *mime, const char *url, const char *buf, int *len);
 /*****************event end**************/
 #endif
