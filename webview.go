@@ -212,6 +212,16 @@ func (view *WebView) SetCspCheck(enable bool) {
 	<-done
 }
 
+// 设置是否允许新窗口打开 默认true
+func (view *WebView) SetNavigationToNewWindowEnable(enable bool) {
+	done := make(chan bool)
+	jobQueue <- func() {
+		C.setNavigationToNewWindowEnable(view.window, C._Bool(enable))
+		close(done)
+	}
+	<-done
+}
+
 func (view *WebView) EnableAutoTitle() {
 	view.autoTitle = true
 	view.SetWindowTitle(view.GetWebTitle())
