@@ -40,6 +40,12 @@ void setCspCheck(wkeWebView window, bool enable)
     wkeSetCspCheckEnable(window, enable);
 }
 
+void setNavigationToNewWindowEnable(wkeWebView window, bool enable)
+{
+    wkeSetNavigationToNewWindowEnable(window, enable);
+}
+
+
 const char *getWebTitle(wkeWebView window)
 {
     return wkeGetTitle(window);

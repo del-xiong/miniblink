@@ -17,6 +17,7 @@ void loadURL(wkeWebView window, char *url);
 void reloadURL(wkeWebView window);
 void setWindowTitle(wkeWebView window, char *title);
 void setCspCheck(wkeWebView window, bool enable);
+void setNavigationToNewWindowEnable(wkeWebView window, bool enable);
 const char *getWebTitle(wkeWebView window);
 void destroyWindow(wkeWebView window);
 void showDevTools(wkeWebView window);
