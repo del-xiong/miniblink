@@ -17,7 +17,17 @@ bool handleLoadUrlBegin(wkeWebView window, void *param, const char *url, wkeNetJ
     struct goGetNetFSData_Return returnValue = goGetNetFSData(window, url);
     if (returnValue.result == 1)
     {
-        //返回1,表示网络文件系统不处理
+        // 返回1,表示网络文件系统不处理
+        // 判断黑白名单/urlEndCb处理
+        struct goOnUrlLoadBeginCheck_Return checkReturn  = goOnUrlLoadBeginCheck(window, url);
+        if (checkReturn.checkFailed) {
+            wkeNetCancelRequest(job);
+            return true;
+        }
+        // 设置了回调才hook 因为很影响性能
+        if (checkReturn.urlEndCbDefined) {
+            wkeNetHookRequest(job);
+        }
         return false;
     }
 
@@ -39,6 +49,15 @@ bool handleLoadUrlBegin(wkeWebView window, void *param, const char *url, wkeNetJ
 }
 
 //url加载完毕,回调
-void handleLoadUrlEnd(wkeWebView window, void *param, const char *url, wkeNetJob job, void *buf, int len)
-{
+void WKE_CALL_TYPE handleLoadUrlEnd(wkeWebView window, void* param, const char *url, void *job, void *buf, int len) {
+    char * data;
+    char * databuf;
+    const char * mime;
+    databuf = (char *)buf;
+    mime = wkeNetGetMIMEType(job, NULL);
+    data = goOnUrlLoadEndHandle(window, mime, url, databuf, &len);
+    // 0值不要调setdata 否则blink可能会崩溃
+    if (len > 0) {
+        wkeNetSetData(job, data, len);
+    }
 }
