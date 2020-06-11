@@ -31,7 +31,6 @@ package main
 
 import (
 	"github.com/del-xiong/miniblink"
-	"github.com/elazarl/go-bindata-assetfs"
 	"log"
 )
 
@@ -45,12 +44,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//注册虚拟网络文件系统到域名app
-	miniblink.RegisterFileSystem("app", &assetfs.AssetFS{
-		Asset:     bin.Asset,
-		AssetDir:  bin.AssetDir,
-		AssetInfo: bin.AssetInfo,
-	})
 
 	//新建view,加载URL
 	view := miniblink.NewWebView(false, 1366, 920)
