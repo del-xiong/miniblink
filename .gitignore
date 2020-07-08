@@ -15,5 +15,3 @@ example.exe
 LocalStorage/
 blink/.vscode/
 
-go.mod
-go.sum
