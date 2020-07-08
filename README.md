@@ -53,7 +53,7 @@ func main() {
     view := miniblink.NewWebView(false, 1366, 920)
     // 启动1366x920透明浏览器(只有web界面会显示)
     //view := miniblink.NewWebView(true, 1366, 920)
-    // 加载百度
+    // 加载github
     view.LoadURL("https://github.com/del-xiong/miniblink")
     // 设置窗体标题(会被web页面标题覆盖)
     view.SetWindowTitle("miniblink window")
