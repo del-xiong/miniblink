@@ -63,6 +63,7 @@ func main() {
     view.ShowWindow()
     // 开启调试模式(会调起chrome调试页面)
     view.ShowDevTools()
+    <- make(chan bool)
 }
 
 ```
