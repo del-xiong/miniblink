@@ -5,6 +5,7 @@ import "C"
 import (
 	"github.com/del-xiong/miniblink/eventemitter"
 	"github.com/lxn/win"
+	"os"
 	"reflect"
 	"unsafe"
 )
@@ -43,8 +44,8 @@ func NewWebView(isTransparent bool, bounds ...int) *WebView {
 		Destroy:       make(chan interface{}),
 		IsDestroy:     false,
 		urlEndHandlerMimeTypes: []string{
-			"text/html", // html
-			"application/x-javascript", //js
+			//"text/html", // html
+			//"application/x-javascript", //js
 			//"text/css", //css
 			//"application/json", //json
 			//"image/svg+xml", //svg
@@ -84,6 +85,7 @@ func NewWebView(isTransparent bool, bounds ...int) *WebView {
 			close(v.Destroy)
 		}
 		v.IsDestroy = true
+		os.Exit(0)
 	})
 	view.On("documentReady", func(v *WebView) {
 		select {
