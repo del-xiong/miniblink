@@ -84,10 +84,12 @@ window.__blink_runjs__ = function(path) {
     	//获取path值
     	let pathSegments = path.split(".");
     	let value = window;
+    	let fnValue = null;
     	for (let pathSegment of pathSegments){
     	    //值存在
     	    if(value[pathSegment] !== undefined){
     	        value = value[pathSegment];
+    	        if (fnValue === null) fnValue = value;
     	    }else
     	        throw new Error("指定的值/函数不存在:" + path);
     	}
@@ -95,13 +97,12 @@ window.__blink_runjs__ = function(path) {
     	if (value === window) {
     	    throw new Error("不允许获取window的值,请设置path");
     	}
-    	
     	if(typeof value === "function"){
     	    //如果是一个函数,则调用他
     	    let args = Array.prototype.slice.call(arguments);
     		args.splice(0, 1);
     		
-    		let result = value.apply(null, args.map(it => JSON.parse(it, __date_parser__)))
+    		let result = value.call(fnValue, ...args.map(it => JSON.parse(it, __date_parser__)))
     		return JSON.stringify({
     			Success: true,
     			ReturnValue: JSON.stringify(result)

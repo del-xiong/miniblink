@@ -37,12 +37,12 @@ type WebView struct {
 
 func NewWebView(isTransparent bool, bounds ...int) *WebView {
 	view := &WebView{
-		autoTitle:     true,
-		jsFunc:        make(map[string]interface{}),
-		jsData:        make(map[string]string),
-		DocumentReady: make(chan interface{}),
-		Destroy:       make(chan interface{}),
-		IsDestroy:     false,
+		autoTitle:              true,
+		jsFunc:                 make(map[string]interface{}),
+		jsData:                 make(map[string]string),
+		DocumentReady:          make(chan interface{}),
+		Destroy:                make(chan interface{}),
+		IsDestroy:              false,
 		urlEndHandlerMimeTypes: []string{
 			//"text/html", // html
 			//"application/x-javascript", //js
@@ -347,14 +347,17 @@ func (view *WebView) DestroyWindow() {
 		<-done
 	}
 }
+
 // 设置黑名单
 func (view *WebView) SetBlacklist(args ...string) {
 	view.blacklist = append(view.blacklist, args...)
 }
+
 // 清空黑名单
 func (view *WebView) ClearBlacklist() {
 	view.blacklist = make([]string, 0)
 }
+
 // 从黑名单移除指定路径
 func (view *WebView) RemoveFromBlacklist(path string) {
 	for k, v := range view.blacklist {
@@ -363,6 +366,7 @@ func (view *WebView) RemoveFromBlacklist(path string) {
 		}
 	}
 }
+
 // 设置白名单
 func (view *WebView) SetWhitelist(args ...string) {
 	view.whitelist = append(view.whitelist, args...)
@@ -374,6 +378,7 @@ func (view *WebView) SetUrlEndHandler(value interface{}) {
 		view.urlEndHandler = value
 	}
 }
+
 // 添加urlEndHandlerMimeTypes处理类型
 func (view *WebView) AddUrlEndHandlerMimeTypes(args ...string) {
 	view.urlEndHandlerMimeTypes = append(view.urlEndHandlerMimeTypes, args...)
